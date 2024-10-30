@@ -1,0 +1,62 @@
+---
+  name-template: "v$RESOLVED_VERSION"
+  tag-template: "v$RESOLVED_VERSION"
+  categories: # categorize
+    - title: "🚀 機能追加"
+      labels:
+        - "enhancement"
+    - title: "🔧  リファクタ"
+      labels:
+        - "refactoring"
+    - title: "🐛 バグ修正"
+      labels:
+        - "bug"
+    - title: "✅ テスト"
+      labels:
+        - "test"
+    - title: "📖 ドキュメント"
+      labels:
+        - "documentation"
+  change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+  change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
+  autolabeler: # auto add labels based on branches or titles
+    - label: "enhancement"
+      branch:
+        - '/feature\/.+/'
+        - '/feat\/.+/'
+    - label: "release"
+      branch:
+        - '/release\/.+/'
+    - label: "refactoring"
+      branch:
+        - '/refactor\/.+/'
+      title:
+        - "/refactor/i"
+    - label: "bug"
+      branch:
+        - '/fix\/.+/'
+        - '/bug\/.+/'
+      title:
+        - "/fix/i"
+        - "/bug/i"
+    - label: "test"
+      branch:
+        - '/test\/.+/'
+    - label: "documentation"
+      branch:
+        - '/doc\/.+/'
+      title:
+        - "/doc/i"
+  version-resolver: # resolve next version based on tags ($RESOLVED_VERSION)
+    major:
+      labels:
+        - "breaking"
+    minor:
+      labels:
+        - "enhancement"
+    default: patch
+  template: |
+    ## 変更
+  
+    $CHANGES
+  
