@@ -2,8 +2,6 @@ import cv2
 import numpy as np
 import torch
 
-from PIL import Image
-
 
 def load_image(image_path: str) -> np.ndarray:
     """
