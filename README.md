@@ -86,10 +86,10 @@ yomitoku --help
 
 本リポジトリ内に格納されているソースコードおよび本プロジェクトに関連する HuggingFaceHub 上のモデルの重みファイルのライセンスは CC BY-NC-SA 4.0 に従います。
 非商用での個人利用、研究目的での利用はご自由にお使いください。
-商用目的での利用に関しては、別途、商用ライセンスを提供しますので、開発者にお問い合わせください。
+商用目的での利用に関しては、別途、商用ライセンスを提供しますので、以下の開発者メールアドレスにお問い合わせください。
 
 開発者メールアドレス
-kotaro.kinoshita@mlism.com
+- kotaro.kinoshita@mlism.com
 
 
 YomiToku © 2024 by Kotaro Kinoshita is licensed under CC BY-NC-SA 4.0. To view a copy of this license, visit https://creativecommons.org/licenses/by-nc-sa/4.0/
