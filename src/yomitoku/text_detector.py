@@ -1,8 +1,11 @@
 from typing import List
 
+import onnx
+import onnxruntime
 import numpy as np
 import torch
 from pydantic import conlist
+
 
 from .base import BaseModelCatalog, BaseModule, BaseSchema
 from .configs import TextDetectorDBNetConfig
@@ -79,11 +82,21 @@ class TextDetector(BaseModule):
             img (np.ndarray): target image(BGR)
         """
 
+        model = onnx.load("onnx/yomitoku-text-detector-dbnet-open-beta.onnx")
+        sess = onnxruntime.InferenceSession(
+            model.SerializeToString(),
+            providers=["CUDAExecutionProvider", "CPUExecutionProvider"],
+        )
+
         ori_h, ori_w = img.shape[:2]
         tensor = self.preprocess(img)
         tensor = tensor.to(self.device)
-        with torch.inference_mode():
-            preds = self.model(tensor)
+        # with torch.inference_mode():
+        #    preds = self.model(tensor)
+
+        results = sess.run(["output"], {"input": tensor.cpu().numpy()})
+        preds = {}
+        preds["binary"] = torch.tensor(results[0])
 
         quads, scores = self.postprocess(preds, (ori_h, ori_w))
         outputs = {"points": quads, "scores": scores}

@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from pydantic import conlist
 
+
 from .base import BaseModelCatalog, BaseModule, BaseSchema
 from .configs import TextRecognizerPARSeqConfig
 from .data.dataset import ParseqDataset
@@ -47,13 +48,18 @@ class TextRecognizer(BaseModule):
         self.load_model(
             model_name,
             path_cfg,
-            from_pretrained=True,
+            from_pretrained=False,
+        )
+
+        self.model.load_state_dict(
+            torch.load("onnx/checkpoint_9_484999.pth", map_location="cpu")["model"]
         )
         self.charset = load_charset(self._cfg.charset)
         self.tokenizer = Tokenizer(self.charset)
 
         self.device = device
 
+        self.model.tokenizer = self.tokenizer
         self.model.eval()
         self.model.to(self.device)
 
@@ -100,7 +106,7 @@ class TextRecognizer(BaseModule):
         for data in dataloader:
             data = data.to(self.device)
             with torch.inference_mode():
-                p = self.model(self.tokenizer, data).softmax(-1)
+                p = self.model(data).softmax(-1)
                 pred, score, direction = self.postprocess(p, points)
                 preds.extend(pred)
                 scores.extend(score)
